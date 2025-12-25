@@ -1,4 +1,3 @@
-import streamlit as st
 import os
 import sys
 import tempfile
@@ -7,9 +6,20 @@ import webbrowser
 import subprocess
 from pathlib import Path
 from PIL import Image
+import streamlit as st
 
-# Import the core converter
-from ..converter import NotebookLMToPPTX
+# Streamlit Cloud에서 상위 모듈을 찾을 수 있도록 루트 경로 추가
+current_dir = Path(__file__).parent.absolute()
+project_root = current_dir.parent.parent.absolute()
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+# Import the core converter using absolute import from root
+try:
+    from src.converter import NotebookLMToPPTX
+except ImportError:
+    # Fallback for different environments
+    from converter import NotebookLMToPPTX
 
 # Neo-brutalism CSS
 st.markdown("""
