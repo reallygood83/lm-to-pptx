@@ -1,0 +1,49 @@
+# NotebookLM PDF to PPTX Converter Configuration
+# Copy this file to config.yaml and fill in your API keys
+
+ai_providers:
+  # 활성화할 기본 제공자: gemini, openai, anthropic, grok
+  default: "gemini"
+
+  gemini:
+    api_key: "YOUR_GEMINI_API_KEY"
+    model: "gemini-2.5-flash"
+    # 대안 모델: gemini-2.5-pro, gemini-3-flash
+
+  openai:
+    api_key: "YOUR_OPENAI_API_KEY"
+    model: "gpt-4.1"
+    # 대안 모델: gpt-4.1-mini, gpt-5.2
+
+  anthropic:
+    api_key: "YOUR_ANTHROPIC_API_KEY"
+    model: "claude-sonnet-4-5"
+    # 대안 모델: claude-opus-4-5, claude-haiku-4-5
+
+  grok:
+    api_key: "YOUR_XAI_API_KEY"
+    model: "grok-4-1-fast"
+    # 대안 모델: grok-4.1, grok-vision
+
+# 발표자 노트 설정
+speaker_notes:
+  style: "detailed"    # brief, detailed, script
+  language: "ko"       # ko, en, ja, zh
+  max_length: 500      # 최대 글자수
+
+# 컨텍스트 자료 설정 (선택사항)
+context_materials:
+  enabled: true                    # 컨텍스트 자료 사용 여부
+  max_file_size_mb: 10             # 단일 파일 최대 크기 (MB)
+  max_total_size_mb: 50            # 전체 파일 최대 크기 (MB)
+  supported_formats:               # 지원 파일 형식
+    - ".pdf"
+    - ".txt"
+    - ".md"
+  chunk_size: 2000                 # 텍스트 청킹 크기 (토큰)
+  include_in_prompt: true          # AI 프롬프트에 컨텍스트 포함
+
+# 출력 설정
+output:
+  default_suffix: "_converted"     # 출력 파일명 접미사
+  preserve_quality: true           # 이미지 품질 유지
