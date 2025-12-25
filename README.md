@@ -1,124 +1,113 @@
-# 📊 NotebookLM PDF → PPTX 변환기 (친절한 가이드)
+# 📊 NotebookLM PDF → PPTX 변환기 (nb2pptx)
 
-> **"NotebookLM이 '똑똑한 연구원'이라면, 이 도구는 '센스 있는 발표 비서'입니다!"**
+> **"NotebookLM의 똑똑한 지식을 가장 완벽한 발표 자료로 만드는 방법"**
 
-NotebookLM에서 만든 PDF 자료, 내용을 참 좋은데 파워포인트에서 수정할 수가 없어 답답하셨죠?  
-이 도구는 여러분의 PDF 슬라이드를 **수정 가능한 파워포인트(PPTX)**로 바꿔주고, 심지어 **"이 슬라이드에선 무슨 말을 해야 할지"** 발표 대본까지 AI가 알아서 써줍니다.
+[![Python Version](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-마치 **AI 비서**에게 "이 자료로 발표 준비해줘, 대본도 같이!"라고 시키는 것과 같습니다. 🧞‍♂️
-
----
-
-## ✨ 무엇을 할 수 있나요?
-
-1.  **🧊 얼어있는 PDF를 말랑한 PPT로!**
-    *   고칠 수 없던 PDF 슬라이드를 파워포인트로 변환해줍니다.
-    *   화면 꽉 차게, 깔끔하게 다듬어서 넣어드려요.
-
-2.  **📝 발표 대본 자동 작성 (핵심!)**
-    *   AI(Gemini, ChatGPT, Claude 등)가 슬라이드 그림을 보고 내용을 이해합니다.
-    *   "이 장표에서는 ~를 강조하세요"라고 발표자 노트에 적어줍니다.
-    *   여러분은 그냥 읽기만 하면 됩니다.
-
-3.  **🧠 더 똑똑하게 (맥락 자료 첨부)**
-    *   혹시 참고자료(PDF, 메모)가 더 있나요? 같이 주면 AI가 그것도 읽고 더 완벽한 대본을 써줍니다.
+NotebookLM에서 생성된 PDF는 훌륭하지만, 실제 발표에서 사용하기엔 **수정이 불가능**하고 **발표 대본(말할 거리)**이 없다는 단점이 있습니다. 이 도구는 그 문제를 완벽하게 해결합니다.
 
 ---
 
-## 🚀 아주 쉬운 설치 및 사용법 (초보자용)
+## 🔥 핵심 가치 (Why nb2pptx?)
 
-컴퓨터를 잘 몰라도 괜찮습니다! 아래 순서대로만 따라하면 **5분** 안에 끝납니다.
+1.  **말랑말랑한 PPTX**: 꽁꽁 얼어있는 PDF 슬라이드를 파워포인트에서 마음껏 수정 가능한 PPTX 파일로 바꿔드립니다.
+2.  **AI 발표 작가**: Gemini, GPT-4, Claude 등 최고의 AI들이 슬라이드 한 장 한 장을 분석하여 품격 있는 발표자 노트를 자동으로 써줍니다.
+3.  **전문가급 퀄리티**: 16:9 표준 규격 지원 및 Neo-brutalism 디자인의 깔끔한 사용자 인터페이스를 제공합니다.
 
-### 1단계: 준비물 챙기기
-가장 먼저 **파이썬(Python 3.9 이상)** 이 설치되어 있어야 합니다.
-*   없다면 [python.org](https://www.python.org/)에서 다운로드해서 설치해주세요. (설치할 때 "Add Python to PATH" 체크박스를 꼭 체크하세요!)
+---
 
-### 2단계: 프로그램 가져오기
-이제 검은 화면(터미널)을 열어서 딱 **3줄**만 치면 됩니다.
+## 🚀 5분 완성 퀵스타트 가이드 (초보자용)
 
-1.  **터미널 열기**:
-    *   **맥(Mac)**: `Command + Space`를 누르고 "터미널"을 검색해서 실행
-    *   **윈도우(Windows)**: `Win` 키를 누르고 "cmd" 또는 "명령 프롬프트"를 검색해서 실행
+컴퓨터를 잘 몰라도 괜찮습니다! 아래 순서대로만 따라하세요.
 
-2.  **명령어 입력하기** (한 줄씩 복사해서 붙여넣고 엔터!):
+### 1단계: 설치 전 준비 (준비물)
+*   **Python**: [python.org](https://www.python.org/)에서 설치 (설치 시 `Add Python to PATH` 체크필수!)
+*   **Git**: [git-scm.com](https://git-scm.com/)에서 설치
 
-    ```bash
-    git clone https://github.com/reallygood83/lm-to-pptx.git
-    ```
-    *(뭔가 다운로드되는 글자들이 뜹니다)*
+### 2단계: 코드 가져오기 (터미널/CMD 열기)
+터미널(맥: `Command+Space` 후 '터미널' 입력 / 윈도우: `Win` 누르고 'cmd' 입력)에서 아래 명령어를 한 줄씩 복사해서 엔터치세요.
 
-    ```bash
-    cd lm-to-pptx
-    ```
-    *(폴더 안으로 들어갑니다)*
+```bash
+# 1. 깃허브에서 프로젝트 복사
+git clone https://github.com/reallygood83/lm-to-pptx.git
 
-    ```bash
-    pip install -e .
-    ```
-    *(필요한 부품들을 자동으로 설치합니다)*
+# 2. 폴더로 이동
+cd lm-to-pptx
 
-### 3단계: 앱 실행하기 (마우스로 편하게!) 🖱️
-설치가 끝났으면 이제 터미널에 딱 한 단어만 치세요.
+# 3. 필요한 부품(패키지) 한 번에 설치
+pip install -e .
+```
+
+### 3단계: 앱 실행 및 초기 설정 🖱️
+이제 마우스로 편하게 작업하세요!
 
 ```bash
 nb2pptx --ui
 ```
 
-그러면 **인터넷 브라우저**가 열리면서 예쁜 앱 화면이 나옵니다! 🎉
+그러면 브라우저가 열리며 앱이 뜹니다. 앱 왼쪽 **[사이드바]**에서 다음을 설정하세요:
+1.  **Poppler 설치**: PDF 처리를 위해 필수입니다. (맥은 버튼 클릭, 윈도우는 안내에 따라 설치)
+2.  **API 키 입력**: Google Gemini (무료) 키를 입력하고 **[소중한 API 키 저장]** 버튼을 누르세요.
 
 ---
 
-## 🛠️ 처음 딱 한 번만! (설정 가이드)
+## 🎮 주요 기능 가이드
 
-앱이 열렸나요? 왼쪽 메뉴(사이드바)를 보세요.
+### 1. 웹 GUI 모드 (가장 추천!)
+*   드래그 앤 드롭으로 PDF 업로드
+*   참고할 보조 자료(텍스트/PDF) 추가 가능
+*   AI 모델(Gemini, Claude, GPT-4 등) 자유 선택
+*   버튼 클릭 한 번으로 최신 버전 업데이트
 
-1.  **Poppler 설치하기 (PDF 변환용 렌즈)**
-    *   왼쪽 메뉴의 **"🛠️ Setup (Poppler)"** 부분을 보세요.
-    *   **맥(Mac)**: **[Poppler 설치]** 버튼을 누르세요. 끝!
-    *   **윈도우(Windows)**: **[다운로드 페이지 열기]** 버튼을 눌러 나오는 사이트에서 파일을 받습니다. 압축을 풀고 그 안의 `bin` 폴더 경로를 컴퓨터 설정에 추가해줘야 합니다. (이 부분만 조금 어려우니 주변에 도움을 청하거나 유튜브에 "윈도우 poppler 설치" 검색!)
-
-2.  **AI 출입증 (API Key) 넣기**
-    *   Google Gemini나 OpenAI, Claude 등 사용하고 싶은 AI의 키를 입력칸에 붙여넣으세요.
-    *   **[💾 API 키 저장]** 버튼을 누르면 다음부터는 입력 안 해도 됩니다.
-
----
-
-## 🎮 이제 즐기세요!
-
-1.  **파일 업로드**: 가운데 있는 **"📂 PDF 파일 업로드"** 버튼을 눌러 변환할 PDF를 넣습니다.
-2.  (선택) 참고할 텍스트 파일이 있다면 "📚 컨텍스트 자료"에 추가합니다.
-3.  **변환 시작**: **[🚀 PPTX로 변환 시작]** 버튼을 꾹 누릅니다.
-4.  잠시 기다리면... **[📥 PPTX 다운로드]** 버튼이 생깁니다. 완성!
-
----
-
-## 🤓 (고수용) 터미널로 쓰기
-개발자 감성으로 빠르게 쓰고 싶다면 터미널 명령어를 사용하세요.
-
+### 2. 터미널(CLI) 모드 (고수용)
+빠르게 대량 작업을 하고 싶을 때 유용합니다.
 ```bash
-# 기본 사용
-nb2pptx 내_발표자료.pdf
+# 기본 변환
+nb2pptx 내자료.pdf
 
-# 옵션 사용
-nb2pptx 내_발표자료.pdf -p gemini --context 메모.txt
+# 특정 AI 지정 및 참고자료 포함
+nb2pptx 내자료.pdf -p gemini --context 보조자료.txt
 ```
 
-## 🤖 지원하는 AI 친구들
+---
 
-여러분의 취향대로 골라 쓸 수 있습니다. (`-p` 옵션 사용)
+## 🔑 AI API 키 발급 받는 법 (처음이라면!)
 
-*   **Gemini (구글)**: `nb2pptx 파일.pdf -p gemini` (기본값, 빠르고 똑똑함)
-*   **Claude (앤스로픽)**: `nb2pptx 파일.pdf -p claude` (글을 아주 잘 씀)
-*   **OpenAI (GPT-4)**: `nb2pptx 파일.pdf -p openai` (논리적임)
-*   **Grok (xAI)**: `nb2pptx 파일.pdf -p grok` (최신 트렌드)
+1.  **Google Gemini (강력 추천/무료)**: [Google AI Studio](https://aistudio.google.com/app/apikey)에서 발급
+2.  **OpenAI (GPT-4)**: [OpenAI Platform](https://platform.openai.com/api-keys)에서 발급
+3.  **Anthropic (Claude)**: [Anthropic Console](https://console.anthropic.com/)에서 발급
 
 ---
 
-## 📬 만든 사람
+## ❓ 자주 묻는 질문 (FAQ)
 
-**배움의 달인**이 만들었습니다. 궁금한 점은 언제든 물어봐주세요!
+**Q: 갑자기 작동이 안 돼요!**  
+A: `nb2pptx --ui` 실행 후 왼쪽 메뉴의 **[🔄 앱 업데이트 확인]** 버튼을 눌러 최신 버전으로 업데이트 해보세요.
 
-*   📺 **유튜브**: [@배움의달인](https://www.youtube.com/@%EB%B0%B0%EC%9B%80%EC%9D%98%EB%8B%AC%EC%9D%B8-p5v)
-*   𝕏 **트위터/X**: [@reallygood83](https://x.com/reallygood83)
+**Q: 윈도우에서 'Poppler' 설정이 너무 어려워요.**  
+A: 유튜브에 "윈도우 poppler 환경변수"라고 검색하시거나, `nb2pptx --ui` 왼쪽 하단의 안내 링크를 차근차근 따라 해보세요. 한번만 설정하면 평생 편합니다!
 
-> *"여러분의 발표가 이 도구로 인해 조금 더 편안해지길 바랍니다."*
+---
+
+## 🆘 문제 해결 (Troubleshooting)
+
+| 발생한 메시지 | 원인 | 해결책 |
+| :--- | :--- | :--- |
+| `Poppler not found` | PDF 렌즈 미설치 | macOS: `brew install poppler` / Win: 바이너리 다운로드 후 Path 등록 |
+| `API key missing` | AI 출입증 없음 | 사이드바에 API 키를 넣고 '저장' 버튼을 누르세요 |
+| `Command not found` | 설치 미완료 | `pip install -e .` 명령어를 다시 실행해보세요 |
+
+---
+
+## 📬 커뮤니티 & 지원
+
+만든 사람: **배움의 달인**  
+이 도구가 도움이 되셨다면 유튜브 구독과 트위터 팔로우로 응원해주세요!
+
+*   📺 **YouTube**: [@배움의달인](https://www.youtube.com/@%EB%B0%B0%EC%9B%80%EC%9D%98%EB%8B%AC%EC%9D%B8-p5v)
+*   𝕏 **X (Twitter)**: [@reallygood83](https://x.com/reallygood83)
+
+---
+
+> *"여러분의 발표가 더 쉽고 즐거워지길 응원합니다!"*

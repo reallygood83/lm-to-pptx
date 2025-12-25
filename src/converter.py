@@ -4,6 +4,7 @@ Main converter class with AI-powered speaker notes generation
 """
 
 import os
+import shutil
 from pathlib import Path
 from typing import Optional, Union, List
 from PIL import Image
@@ -93,13 +94,11 @@ class NotebookLMToPPTX:
             self.ai_provider = provider_class(self.api_key)
 
     def _check_dependencies(self):
-        """필수 의존성 확인."""
+        """필수 의존성 및 외부 도구 확인."""
         if convert_from_path is None:
             raise ImportError(
                 "pdf2image 패키지가 필요합니다. "
-                "설치: pip install pdf2image\n"
-                "macOS: brew install poppler\n"
-                "Ubuntu: sudo apt-get install poppler-utils"
+                "설치: pip install pdf2image"
             )
 
         if Presentation is None:
@@ -107,6 +106,33 @@ class NotebookLMToPPTX:
                 "python-pptx 패키지가 필요합니다. "
                 "설치: pip install python-pptx"
             )
+
+        # Poppler (pdftoppm) 의존성 확인
+        if not shutil.which("pdftoppm") and not shutil.which("pdftocairo"):
+            import platform
+            os_name = platform.system()
+            
+            error_msg = (
+                "\n" + "="*50 + "\n"
+                "🚨 Poppler를 찾을 수 없습니다! (PDF 변환 필수 도구)\n"
+                "--------------------------------------------------\n"
+                f"현재 운영체제: {os_name}\n\n"
+            )
+            
+            if os_name == "Darwin":  # macOS
+                error_msg += "👉 설치 방법: brew install poppler\n"
+            elif os_name == "Windows":
+                error_msg += (
+                    "👉 설치 방법:\n"
+                    "1. https://github.com/oschwartz10612/poppler-windows/releases/ 에서 최신 bin.7z 다운로드\n"
+                    "2. 압축 해제 후 'bin' 폴더 경로를 시스템 환경변수 'Path'에 추가\n"
+                    "3. 또는 'nb2pptx --ui' 명령어로 앱을 켠 뒤 사이드바의 [다운로드 페이지 열기] 버튼 클릭!\n"
+                )
+            else:
+                error_msg += "👉 설치 방법: sudo apt-get install poppler-utils (Ubuntu/Debian)\n"
+            
+            error_msg += "="*50 + "\n"
+            raise RuntimeError(error_msg)
 
     def _get_api_key_from_env(self) -> str:
         """환경변수에서 API 키 가져오기."""
