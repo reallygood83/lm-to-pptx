@@ -86,15 +86,15 @@ nb2pptx 내_발표자료.pdf -p gemini --context 참고자료.txt
 
 ---
 
-## 💻 윈도우(Windows) 사용자도 OK!
+## 💻 윈도우 & 맥 사용자 설치 꿀팁 (Setup)
 
-맥(Mac)과 윈도우(Windows) 모두 완벽하게 지원합니다.
+**"Poppler 설치? 그게 뭐죠?"** 🤷‍♂️  
+걱정 마세요! 이제 **GUI 모드**가 다 도와드립니다.
 
-*   **GUI 모드**: 윈도우에서도 `nb2pptx --ui`를 입력하면 브라우저가 열리며 앱처럼 실행됩니다.
-*   **주의사항**: PDF 변환을 위해 **Poppler**라는 도구가 꼭 필요합니다.
-    1.  [Poppler 윈도우용 다운로드](https://github.com/oschwartz10612/poppler-windows/releases/)
-    2.  압축을 풀고 `bin` 폴더 경로를 시스템 환경변수 `Path`에 추가해주세요.
-    3.  (잘 모르시겠다면 "윈도우 poppler 환경변수 설정"을 검색해보세요!)
+1.  일단 `nb2pptx --ui`로 앱을 켭니다.
+2.  왼쪽 설정 메뉴(Settings) 위에 있는 **"🛠️ Setup (Poppler)"** 부분을 보세요.
+    *   **🍏 맥(Mac)**: **[Poppler 설치]** 버튼만 누르면 알아서 설치해줍니다.
+    *   **🪟 윈도우(Windows)**: **[다운로드 페이지 열기]** 버튼을 누르면 바로 사이트로 이동합니다. (다운받아서 `bin` 폴더만 설정을 잡아주세요!)
 
 ---
 
