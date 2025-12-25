@@ -374,24 +374,36 @@ if uploaded_file and st.button("🚀 PPTX로 변환 시작", use_container_width
                     progress_callback=update_progress
                 )
                 
-                st.success("✨ 변환 완료!")
-                status.update(label="✅변환이 완료되었습니다!", state="complete", expanded=False)
+                status.update(label="✅ 변환 프로세스 완료!", state="complete", expanded=False)
+                
+                # Show results in a Neo-brutalism box
+                st.markdown(f"""
+                <div style='background: #A3FFAC; border: 3px solid black; padding: 20px; box-shadow: 5px 5px 0 black; margin-top: 20px; margin-bottom: 20px;'>
+                    <h3 style='margin-top:0;'>🎉 변환 성공!</h3>
+                    <p style='margin-bottom:0;'>파일이 성공적으로 생성되었습니다. 아래 버튼을 눌러 저장하세요.</p>
+                </div>
+                """, unsafe_allow_html=True)
                 
                 # Download Button
                 with open(output_path, "rb") as f:
                     st.download_button(
-                        label="📥 PPTX 다운로드",
+                        label="📥 PPTX 파일 저장하기 (여기를 클릭!)",
                         data=f,
                         file_name=f"{uploaded_file.name.replace('.pdf', '')}.pptx",
                         mime="application/vnd.openxmlformats-officedocument.presentationml.presentation",
                         use_container_width=True
                     )
+                
+                st.info("💡 **어디에 파일이 저장되나요?**\n\n웹 브라우저를 쓰고 계시다면 컴퓨터의 **'다운로드(Downloads)'** 폴더에 저장됩니다. (로컬 터미널에서 실행 시에는 원본 PDF와 같은 폴더에 저장됩니다.)")
 
                 # Cleanup
-                os.unlink(pdf_path)
-                for p in context_paths:
-                    os.unlink(p)
-                os.unlink(output_path)  # Clean up temp output after reading into memory
+                try:
+                    os.unlink(pdf_path)
+                    for p in context_paths:
+                        os.unlink(p)
+                    os.unlink(output_path)
+                except:
+                    pass
 
             except Exception as e:
                 st.error(f"❌ 오류가 발생했습니다: {str(e)}")
