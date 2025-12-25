@@ -98,6 +98,11 @@ def parse_args():
         action="store_true",
         help="GitHub에서 최신 버전으로 업데이트합니다."
     )
+    parser.add_argument(
+        "--remove-watermark",
+        action="store_true",
+        help="우측 하단 NotebookLM 워터마크를 제거합니다."
+    )
     
     return parser.parse_args()
 
@@ -209,7 +214,8 @@ def main():
             provider=args.provider,
             api_key=args.api_key,
             model=args.model,
-            dpi=args.dpi
+            dpi=args.dpi,
+            remove_watermark=args.remove_watermark
         )
         
         # 진행률 표시 변수

@@ -323,11 +323,13 @@ st.markdown("""
 uploaded_file = st.file_uploader("📂 PDF 파일 업로드", type="pdf")
 context_files = st.file_uploader("📚 컨텍스트 자료 (선택사항)", type=["txt", "md", "pdf"], accept_multiple_files=True)
 
-col1, col2 = st.columns(2)
+col1, col2, col3 = st.columns(3)
 with col1:
-    no_notes = st.checkbox("AI 노트 생성 안 함 (빠른 변환)", value=False)
+    no_notes = st.checkbox("AI 노트 생성 안 함", value=False)
 with col2:
-    dpi = st.slider("PDF 화질 (DPI)", 72, 300, 144)
+    remove_watermark = st.checkbox("워터마크 제거", value=True, help="우측 하단의 NotebookLM 워터마크를 가립니다.")
+with col3:
+    dpi = st.slider("화질 (DPI)", 72, 300, 144)
 
 if uploaded_file and st.button("🚀 PPTX로 변환 시작", use_container_width=True):
     if not api_key and not no_notes:
@@ -354,7 +356,8 @@ if uploaded_file and st.button("🚀 PPTX로 변환 시작", use_container_width
                 converter = NotebookLMToPPTX(
                     provider=provider,
                     api_key=api_key,
-                    dpi=dpi
+                    dpi=dpi,
+                    remove_watermark=remove_watermark
                 )
 
                 # Convert
