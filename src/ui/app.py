@@ -2,21 +2,13 @@ import streamlit as st
 import os
 import sys
 import tempfile
+import platform
+import webbrowser
+import subprocess
 from pathlib import Path
 from PIL import Image
 
-# Add project root to path
-sys.path.append(str(Path(__file__).parent.parent.parent))
-
-from src.converter import NotebookLMToPPTX
-
-# Page Config
-st.set_page_config(
-    page_title="NotebookLM to PPTX",
-    page_icon="📊",
-    layout="centered",
-    initial_sidebar_state="expanded"
-)
+# ... (rest of imports and setup)
 
 # Neo-brutalism CSS
 st.markdown("""
@@ -137,11 +129,6 @@ st.markdown("""
     }
 
 </style>
-import platform
-import webbrowser
-import subprocess
-
-# ... (Previous style code) ...
 """, unsafe_allow_html=True)
 
 # Helper function to load API keys
