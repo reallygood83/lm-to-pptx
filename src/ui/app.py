@@ -155,9 +155,34 @@ keys = load_api_keys()
 # Sidebar
 with st.sidebar:
     st.image("https://em-content.zobj.net/source/microsoft-teams/363/chart-increasing_1f4c8.png", width=80)
-    st.title("Settings")
-    
+    # Update Function
+    def ui_perform_update():
+        import subprocess
+        try:
+            with st.status("🔄 업데이트 진행 중...", expanded=True) as status:
+                st.write("Git 저장소 확인 중...")
+                if (Path(".git").exists() and Path(".git").is_dir()):
+                    st.write("Git Pull 실행...")
+                    subprocess.check_call(["git", "pull"])
+                    st.write("의존성 업데이트...")
+                    subprocess.check_call([sys.executable, "-m", "pip", "install", "-e", "."])
+                else:
+                    st.write("PIP 업그레이드 실행...")
+                    subprocess.check_call([
+                        sys.executable, "-m", "pip", "install", "--upgrade", 
+                        "git+https://github.com/reallygood83/lm-to-pptx.git"
+                    ])
+                status.update(label="✅ 업데이트 완료! 앱을 재실행해주세요.", state="complete", expanded=False)
+                st.success("업데이트가 완료되었습니다. 터미널에서 앱을 껐다 켜주세요.")
+        except Exception as e:
+            st.error(f"업데이트 실패: {str(e)}")
+
+    if st.button("🔄 앱 업데이트 확인", use_container_width=True):
+        ui_perform_update()
+
     st.markdown("---")
+    
+    st.markdown("### Settings")
     
     provider = st.selectbox(
         "AI Provider",
@@ -166,22 +191,82 @@ with st.sidebar:
         help="Select the AI intelligence to use."
     )
     
-    api_key_env = keys.get(provider, '')
+    # API Key Handling
+    current_key_env = keys.get(provider, '')
+    
+    # Check session state for key maintenance
+    if f"{provider}_key" not in st.session_state:
+        st.session_state[f"{provider}_key"] = current_key_env
+        
     api_key = st.text_input(
         f"{provider.capitalize()} API Key", 
-        value=api_key_env,
+        value=st.session_state[f"{provider}_key"],
         type="password",
-        help=f"Enter your {provider} API key if not set in .env"
+        help=f"Enter your {provider} API key"
     )
+    
+    # Save API Key Button
+    if st.button("💾 API 키 저장 (.env)", use_container_width=True):
+        try:
+            env_path = Path(".env")
+            env_content = ""
+            if env_path.exists():
+                with open(env_path, "r", encoding="utf-8") as f:
+                    env_content = f.read()
+            
+            # Simple parsing to replace or append
+            env_map = {
+                'gemini': 'GOOGLE_API_KEY',
+                'openai': 'OPENAI_API_KEY',
+                'anthropic': 'ANTHROPIC_API_KEY',
+                'grok': 'XAI_API_KEY',
+            }
+            target_var = env_map.get(provider)
+            
+            if target_var:
+                new_line = f"{target_var}={api_key}\n"
+                
+                # If var exists, replace it
+                if target_var in env_content:
+                    lines = env_content.splitlines()
+                    new_lines = []
+                    found = False
+                    for line in lines:
+                        if line.startswith(f"{target_var}="):
+                            new_lines.append(f"{target_var}='{api_key}'")
+                            found = True
+                        else:
+                            new_lines.append(line)
+                    env_content = "\n".join(new_lines)
+                else:
+                    env_content += f"\n{new_line}"
+                
+                with open(env_path, "w", encoding="utf-8") as f:
+                    f.write(env_content)
+                
+                st.success(f"{provider} API Key가 .env에 저장되었습니다!")
+                # Update session state to reflect saved
+                st.session_state[f"{provider}_key"] = api_key
+        except Exception as e:
+            st.error(f"저장 실패: {str(e)}")
 
     st.markdown("---")
     
     st.markdown("### Developer")
+    
+    # Custom Button-like Links
     st.markdown("""
-    <div style='background: #fff; border: 2px solid #000; padding: 10px; box-shadow: 4px 4px 0 #000;'>
-        <b>배움의 달인</b><br>
-        <a href='https://www.youtube.com/@%EB%B0%B0%EC%9B%80%EC%9D%98%EB%8B%AC%EC%9D%B8-p5v' style='text-decoration:none; color: red;'>📺 YouTube</a><br>
-        <a href='https://x.com/reallygood83' style='text-decoration:none; color: black;'>𝕏 Twitter/X</a>
+    <div style="display: flex; gap: 10px; flex-direction: column;">
+        <a href="https://www.youtube.com/@%EB%B0%B0%EC%9B%80%EC%9D%98%EB%8B%AC%EC%9D%B8-p5v" target="_blank" style="text-decoration: none;">
+            <div style="background-color: #FF0000; color: white; padding: 10px; text-align: center; border: 2px solid #000; box-shadow: 4px 4px 0px #000; font-weight: bold; transition: all 0.1s;">
+                📺 YouTube 구독하기
+            </div>
+        </a>
+        <a href="https://x.com/reallygood83" target="_blank" style="text-decoration: none;">
+            <div style="background-color: #000000; color: white; padding: 10px; text-align: center; border: 2px solid #000; box-shadow: 4px 4px 0px #888; font-weight: bold;">
+                𝕏 Twitter / X 팔로우
+            </div>
+        </a>
     </div>
     """, unsafe_allow_html=True)
 
