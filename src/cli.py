@@ -43,7 +43,8 @@ def parse_args():
     
     parser.add_argument(
         "pdf_path",
-        help="변환할 PDF 파일 경로"
+        nargs='?',
+        help="변환할 PDF 파일 경로 (업데이트 시 생략 가능)"
     )
     
     parser.add_argument(
@@ -86,8 +87,52 @@ def parse_args():
         default=144,
         help="PDF 변환 해상도 (기본값: 144 DPI)"
     )
+    parser.add_argument(
+        "--update",
+        action="store_true",
+        help="GitHub에서 최신 버전으로 업데이트합니다."
+    )
     
     return parser.parse_args()
+
+def perform_update():
+    """GitHub에서 최신 버전으로 업데이트 수행"""
+    import subprocess
+    
+    console.print()
+    console.print(Panel("[bold cyan]🔄 업데이트 확인 중...[/bold cyan]", border_style="cyan"))
+    
+    # 1. Git 저장소인지 확인
+    is_git = (Path(".git").exists() and Path(".git").is_dir())
+    
+    try:
+        if is_git:
+            console.print("[dim]Git 저장소가 감지되었습니다. 'git pull'을 실행합니다...[/dim]")
+            subprocess.check_call(["git", "pull"])
+            console.print("[dim]의존성을 업데이트합니다...[/dim]")
+            subprocess.check_call([sys.executable, "-m", "pip", "install", "-e", "."])
+        else:
+            console.print("[dim]pip 패키지 업데이트를 시도합니다...[/dim]")
+            subprocess.check_call([
+                sys.executable, "-m", "pip", "install", "--upgrade", 
+                "git+https://github.com/reallygood83/lm-to-pptx.git"
+            ])
+            
+        console.print(Panel(
+            "[success]✨ 업데이트가 완료되었습니다![/success]\n\n"
+            "[bold]프로그램을 다시 실행해주세요.[/bold]",
+            title="Update Success",
+            border_style="green"
+        ))
+        
+    except subprocess.CalledProcessError as e:
+        console.print(f"[error]❌ 업데이트 실패:[/error] {str(e)}")
+        sys.exit(1)
+    except Exception as e:
+        console.print(f"[error]❌ 알 수 없는 오류:[/error] {str(e)}")
+        sys.exit(1)
+    
+    sys.exit(0)
 
 def main():
     # .env 파일 로드
@@ -95,6 +140,10 @@ def main():
     
     args = parse_args()
     
+    # 업데이트 명령 실행 시 바로 업데이트 루틴으로 이동
+    if hasattr(args, 'update') and args.update:
+        perform_update()
+        
     # 타이틀 출력
     console.print()
     
@@ -112,7 +161,12 @@ def main():
     ))
     console.print()
 
-    # 입력 파일 확인
+    # 입력 파일 확인 (업데이트 모드가 아닐 때만 필수)
+    if not args.pdf_path:
+        console.print("[warning]사용법: nb2pptx [PDF파일경로] 또는 nb2pptx --update[/warning]")
+        console.print("자세한 도움말은 [bold]nb2pptx --help[/bold]를 참고하세요.")
+        sys.exit(0)
+
     pdf_path = Path(args.pdf_path)
     if not pdf_path.exists():
         console.print(f"[error]❌ 오류: 파일을 찾을 수 없습니다: {pdf_path}[/error]")

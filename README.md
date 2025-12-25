@@ -1,85 +1,108 @@
-# NotebookLM PDF to PPTX Converter v0.4.0
+# 📊 NotebookLM PDF → PPTX 변환기 (친절한 가이드)
 
-A powerful tool to convert NotebookLM-generated PDF slides into editable PowerPoint presentations (`.pptx`) with **AI-generated speaker notes**.
+> **"NotebookLM이 '똑똑한 연구원'이라면, 이 도구는 '센스 있는 발표 비서'입니다!"**
 
-## Features
+NotebookLM에서 만든 PDF 자료, 내용을 참 좋은데 파워포인트에서 수정할 수가 없어 답답하셨죠?  
+이 도구는 여러분의 PDF 슬라이드를 **수정 가능한 파워포인트(PPTX)**로 바꿔주고, 심지어 **"이 슬라이드에선 무슨 말을 해야 할지"** 발표 대본까지 AI가 알아서 써줍니다.
 
-- **High-Quality Conversion**: Converts PDF slides to high-resolution full-slide images in PowerPoint.
-- **AI Speaker Notes**: Automatically analyzes each slide using AI Vision to generate detailed speaker notes.
-  - Supports **Gemini** (default), **OpenAI** (GPT-4o), **Claude** (Sonnet), and **Grok**.
-- **Context Materials**: usage of additional context files (`.txt`, `.md`, `.pdf`) to guide the AI for better quality notes.
-- **CLI Interface**: Robust command-line interface with progress tracking.
+마치 **AI 비서**에게 "이 자료로 발표 준비해줘, 대본도 같이!"라고 시키는 것과 같습니다. 🧞‍♂️
 
-## Installation
+---
 
-### Option 1: Install from Source (Recommended)
+## ✨ 무엇을 할 수 있나요?
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/notebooklm-to-pptx.git
-   cd notebooklm-to-pptx
-   ```
+1.  **🧊 얼어있는 PDF를 말랑한 PPT로!**
+    *   고칠 수 없던 PDF 슬라이드를 파워포인트로 변환해줍니다.
+    *   화면 꽉 차게, 깔끔하게 다듬어서 넣어드려요.
 
-2. Create a virtual environment (optional but recommended):
-   ```bash
-   python3 -m venv venv
-   source venv/bin/activate  # Mac/Linux
-   # or
-   .\venv\Scripts\activate  # Windows
-   ```
+2.  **📝 발표 대본 자동 작성 (핵심!)**
+    *   AI(Gemini, ChatGPT, Claude 등)가 슬라이드 그림을 보고 내용을 이해합니다.
+    *   "이 장표에서는 ~를 강조하세요"라고 발표자 노트에 적어줍니다.
+    *   여러분은 그냥 읽기만 하면 됩니다.
 
-3. Install the package in editable mode:
-   ```bash
-   pip install -e .
-   ```
+3.  **🧠 더 똑똑하게 (맥락 자료 첨부)**
+    *   혹시 참고자료(PDF, 메모)가 더 있나요? 같이 주면 AI가 그것도 읽고 더 완벽한 대본을 써줍니다.
 
-4. Install system dependencies for PDF conversion:
-   - **macOS**: `brew install poppler`
-   - **Ubuntu**: `sudo apt-get install poppler-utils`
-   - **Windows**: Download and add poppler to PATH.
+---
 
-### Option 2: Install via pip (once published)
+## 🚀 설치 방법 (비유로 쉽게 설명하기)
+
+이 프로그램을 여러분의 컴퓨터에 모셔오는 방법입니다. 요리 도구를 주방에 들여놓는 것과 비슷해요!
+
+### 1단계: 도구 상자 가져오기 (다운로드)
+터미널(명령 프롬프트)을 열고 아래 주문을 외우세요. (복사해서 붙여넣기 하세요!)
 
 ```bash
-pip install notebooklm-pptx
+# 1. 깃허브에서 코드를 내 컴퓨터로 복사합니다 (택배 받기)
+git clone https://github.com/reallygood83/lm-to-pptx.git
+
+# 2. 폴더 안으로 들어갑니다 (박스 뜯기)
+cd lm-to-pptx
+
+# 3. 설치 가능한 상태로 만듭니다 (조립하기)
+pip install -e .
 ```
 
-## Configuration
+### 2단계: 필수품 챙기기 (Poppler 설치)
+PDF를 그림으로 바꾸려면 `Poppler`라는 렌즈가 필요합니다.
+*   **맥(macOS) 사용자**: `brew install poppler`
+*   **윈도우 사용자**: [여기](https://github.com/oschwartz10612/poppler-windows/releases/)에서 다운로드해서 경로를 설정해야 해요. (조금 어려울 수 있어요!)
 
-Copy `.env.example` to `.env` and add your API keys:
+### 3단계: AI 출입증 만들기 (API 키 설정)
+AI 비서(Gemini, GPT 등)를 부르려면 출입증(API Key)이 필요합니다.
+
+1.  폴더에 있는 `.env.example` 파일의 이름을 `.env`로 바꿉니다.
+2.  그 파일을 메모장으로 열어서 `GOOGLE_API_KEY=...` 부분에 여러분의 키를 적으세요.
+    *   *팁: 구글 Gemini 키는 무료로 받을 수 있어요!*
+
+---
+
+## 🎮 사용 방법 (비서에게 일 시키기)
+
+설치가 끝났으면 이제 명령만 내리면 됩니다. 터미널에 이렇게 입력하세요.
+
+### "기본으로 부탁해!" (제일 많이 쓰는 법)
 ```bash
-cp .env.example .env
+nb2pptx 내_발표자료.pdf
 ```
-Edit `.env` with your API key for the chosen provider (e.g., `GOOGLE_API_KEY`).
+👉 `내_발표자료.pptx`가 짠! 하고 생깁니다. 대본도 들어있어요.
 
-## Usage
-
-After installation, you can use the `nb2pptx` command from anywhere:
-
+### "참고자료도 있으니까 같이 보고 써줘"
 ```bash
-nb2pptx slides.pdf
+nb2pptx 내_발표자료.pdf --context 참고메모.txt
 ```
+👉 비서는 참고메모를 읽고 더 똑똑한 대본을 씁니다.
 
-Specify provider and context materials:
+### "대본은 됐고, PPT만 만들어줘"
 ```bash
-nb2pptx slides.pdf --provider openai --context notes.txt
+nb2pptx 내_발표자료.pdf --no-notes
 ```
+👉 AI를 쓰지 않고 페이지만 바꿀 때 씁니다. (빠릅니다!)
 
-No speaker notes (only convert images):
+### "비서가 좀 낡은 것 같아... 업데이트 해줘" (NEW)
 ```bash
-nb2pptx slides.pdf --no-notes
+nb2pptx --update
 ```
+👉 최신 기능이 나왔을 때 이 명령어를 치면 알아서 새 버전으로 업그레이드됩니다!
 
-## Options
+---
 
-| Option | Description |
-|--------|-------------|
-| `--provider`, `-p` | AI provider: `gemini` (default), `openai`, `claude`, `grok` |
-| `--context`, `-c` | Context file paths (can be used multiple times) |
-| `--no-notes` | Skip AI speaker note generation |
-| `--model`, `-m` | Specify a custom model name |
-| `--dpi` | PDF rendering resolution (default: 144) |
+## 🤖 지원하는 AI 친구들
 
-## License
+여러분의 취향대로 골라 쓸 수 있습니다. (`-p` 옵션 사용)
 
-MIT
+*   **Gemini (구글)**: `nb2pptx 파일.pdf -p gemini` (기본값, 빠르고 똑똑함)
+*   **Claude (앤스로픽)**: `nb2pptx 파일.pdf -p claude` (글을 아주 잘 씀)
+*   **OpenAI (GPT-4)**: `nb2pptx 파일.pdf -p openai` (논리적임)
+*   **Grok (xAI)**: `nb2pptx 파일.pdf -p grok` (최신 트렌드)
+
+---
+
+## 📬 만든 사람
+
+**배움의 달인**이 만들었습니다. 궁금한 점은 언제든 물어봐주세요!
+
+*   📺 **유튜브**: [@배움의달인](https://www.youtube.com/@%EB%B0%B0%EC%9B%80%EC%9D%98%EB%8B%AC%EC%9D%B8-p5v)
+*   𝕏 **트위터/X**: [@reallygood83](https://x.com/reallygood83)
+
+> *"여러분의 발표가 이 도구로 인해 조금 더 편안해지길 바랍니다."*
