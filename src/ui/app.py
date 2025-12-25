@@ -137,6 +137,11 @@ st.markdown("""
     }
 
 </style>
+import platform
+import webbrowser
+import subprocess
+
+# ... (Previous style code) ...
 """, unsafe_allow_html=True)
 
 # Helper function to load API keys
@@ -179,6 +184,36 @@ with st.sidebar:
 
     if st.button("🔄 앱 업데이트 확인", use_container_width=True):
         ui_perform_update()
+
+    st.markdown("---")
+    
+    # Poppler Installation Section
+    st.markdown("### 🛠️ Setup (Poppler)")
+    os_name = platform.system()
+    
+    if os_name == "Darwin":  # macOS
+        if st.button("🍏 Poppler 설치 (Mac)", help="Homebrew를 통해 poppler를 설치합니다.", use_container_width=True):
+            try:
+                with st.status("🍏 설치 진행 중...", expanded=True) as status:
+                    st.write("Homebrew 확인 중...")
+                    subprocess.check_call(["brew", "--version"])
+                    st.write("Poppler 설치 시작 (시간이 좀 걸립니다)...")
+                    subprocess.check_call(["brew", "install", "poppler"])
+                    status.update(label="✅ 설치가 완료되었습니다!", state="complete", expanded=False)
+                    st.success("Poppler 설치 완료!")
+            except subprocess.CalledProcessError:
+                st.error("❌ Homebrew가 없거나 설치 중 오류가 발생했습니다. 터미널에서 'brew install poppler'를 직접 실행해주세요.")
+            except Exception as e:
+                st.error(f"❌ 오류: {str(e)}")
+                
+    elif os_name == "Windows":
+        st.info("윈도우는 수동 설치가 필요합니다.")
+        if st.button("🪟 다운로드 페이지 열기", use_container_width=True):
+            webbrowser.open("https://github.com/oschwartz10612/poppler-windows/releases/")
+            st.info("💡 링크에서 최신 버전을 받아 압축을 풀고 'bin' 폴더를 환경변수 Path에 추가해주세요.")
+            
+    else:
+        st.info(f"운영체제({os_name})에 맞는 Poppler 설치가 필요합니다.")
 
     st.markdown("---")
     
