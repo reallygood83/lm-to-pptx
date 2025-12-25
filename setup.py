@@ -16,10 +16,12 @@ setup(
         "pymupdf>=1.25.0",
         "python-dotenv>=1.0.0",
         "rich>=13.9.0",
+        "streamlit>=1.30.0",
     ],
     entry_points={
         "console_scripts": [
             "nb2pptx=src.cli:main",
+            "nb2pptx-ui=src.cli:launch_ui",
             "notebooklm-pptx=src.cli:main",
         ],
     },

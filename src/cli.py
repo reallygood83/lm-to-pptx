@@ -82,6 +82,12 @@ def parse_args():
     )
     
     parser.add_argument(
+        "--ui",
+        action="store_true",
+        help="웹 기반 GUI 모드로 실행합니다."
+    )
+    
+    parser.add_argument(
         "--dpi",
         type=int,
         default=144,
@@ -134,15 +140,40 @@ def perform_update():
     
     sys.exit(0)
 
+def launch_ui():
+    """Streamlit UI 실행"""
+    import subprocess
+    
+    ui_path = Path(__file__).parent / "ui" / "app.py"
+    if not ui_path.exists():
+        console.print(f"[error]❌ UI 파일을 찾을 수 없습니다: {ui_path}[/error]")
+        sys.exit(1)
+        
+    console.print(Panel("[bold cyan]🚀 웹 GUI를 시작합니다...[/bold cyan]", border_style="cyan"))
+    
+    try:
+        subprocess.run([sys.executable, "-m", "streamlit", "run", str(ui_path)], check=True)
+    except KeyboardInterrupt:
+        console.print("\n[dim]GUI 종료[/dim]")
+        sys.exit(0)
+    except Exception as e:
+        console.print(f"[error]❌ UI 실행 실패:[/error] {str(e)}")
+        sys.exit(1)
+
 def main():
     # .env 파일 로드
     load_dotenv()
     
     args = parse_args()
     
-    # 업데이트 명령 실행 시 바로 업데이트 루틴으로 이동
+    # 업데이트 명령 실행
     if hasattr(args, 'update') and args.update:
         perform_update()
+        
+    # UI 모드 실행
+    if hasattr(args, 'ui') and args.ui:
+        launch_ui()
+        sys.exit(0)
         
     # 타이틀 출력
     console.print()
@@ -161,9 +192,9 @@ def main():
     ))
     console.print()
 
-    # 입력 파일 확인 (업데이트 모드가 아닐 때만 필수)
+    # 입력 파일 확인 (업데이트/UI 모드가 아닐 때만 필수)
     if not args.pdf_path:
-        console.print("[warning]사용법: nb2pptx [PDF파일경로] 또는 nb2pptx --update[/warning]")
+        console.print("[warning]사용법: nb2pptx [PDF파일경로] 또는 nb2pptx --ui / --update[/warning]")
         console.print("자세한 도움말은 [bold]nb2pptx --help[/bold]를 참고하세요.")
         sys.exit(0)
 
