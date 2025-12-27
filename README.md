@@ -17,38 +17,92 @@ NotebookLM에서 생성된 PDF는 훌륭하지만, 실제 발표에서 사용하
 
 ---
 
-## 🚀 5분 완성 퀵스타트 가이드 (초보자용)
+## 🚀 설치 가이드
 
-컴퓨터를 잘 몰라도 괜찮습니다! 아래 순서대로만 따라하세요.
+### 📌 운영체제별 바로가기
+- [🪟 **Windows 사용자**](#-windows-설치)
+- [🍎 **Mac 사용자**](#-mac-설치)
 
-### 1단계: 설치 전 준비 (준비물)
-*   **Python**: [python.org](https://www.python.org/)에서 설치 (설치 시 `Add Python to PATH` 체크필수!)
-*   **Git**: [git-scm.com](https://git-scm.com/)에서 설치
+---
 
-### 2단계: 코드 가져오기 (터미널/CMD 열기)
-터미널(맥: `Command+Space` 후 '터미널' 입력 / 윈도우: `Win` 누르고 'cmd' 입력)에서 아래 명령어를 한 줄씩 복사해서 엔터치세요.
+## 🪟 Windows 설치
+
+### 1단계: Python 설치 (필수)
+
+👉 **[Python 다운로드 페이지 바로가기](https://www.python.org/downloads/)**
+
+1. 위 링크에서 **Download Python 3.x.x** 클릭
+2. 다운로드된 파일 실행
+3. ⚠️ **중요!** 설치 화면 하단 **"Add Python to PATH"** 반드시 체크! ⚠️
+4. **Install Now** 클릭
+
+### 2단계: 프로그램 다운로드
+
+👉 **[ZIP 파일 직접 다운로드](https://github.com/reallygood83/lm-to-pptx/archive/refs/heads/main.zip)**
+
+1. 위 링크 클릭하여 ZIP 다운로드
+2. 바탕화면에 압축 해제
+3. 폴더명을 `lm-to-pptx`로 변경
+
+### 3단계: 원클릭 설치 ⭐
+
+1. `lm-to-pptx` 폴더 열기
+2. **`install_windows.bat`** 더블클릭!
+3. 자동으로 모든 패키지 설치됨
+4. **바탕화면에 `NotebookLM변환기.bat` 생성!**
+
+### 4단계: Poppler 설치 (필수)
+
+👉 **[Poppler 다운로드 페이지](https://github.com/oschwartz10612/poppler-windows/releases)**
+
+1. 위 링크에서 **Release-xx.xx.x-x.zip** 다운로드
+2. 압축 해제 → `C:\poppler` 폴더로 이동
+3. 환경변수 PATH에 `C:\poppler\Library\bin` 추가
+   - `Win + S` → "환경 변수" 검색 → Path 편집 → 새로 만들기
+
+### 🎮 실행 방법 (Windows)
+바탕화면의 **`NotebookLM변환기.bat`** 더블클릭!
+
+---
+
+## 🍎 Mac 설치
+
+### 1단계: 원클릭 설치 ⭐
+
+👉 **[ZIP 파일 직접 다운로드](https://github.com/reallygood83/lm-to-pptx/archive/refs/heads/main.zip)**
+
+1. 위 링크에서 ZIP 다운로드 후 바탕화면에 압축 해제
+2. `lm-to-pptx` 폴더 열기
+3. **`install_mac.command`** 더블클릭!
+4. 자동으로 Homebrew, Python, Poppler, 패키지 모두 설치됨
+5. **바탕화면에 `NotebookLM변환기.command` 생성!**
+
+> ⚠️ "확인되지 않은 개발자" 경고 시: `시스템 설정` → `개인정보 보호 및 보안` → **"확인 없이 열기"**
+
+### 🎮 실행 방법 (Mac)
+바탕화면의 **`NotebookLM변환기.command`** 더블클릭!
+
+---
+
+## 🔧 첫 실행 설정
+
+앱이 브라우저에서 열리면 왼쪽 **[사이드바]**에서 설정:
+
+1. **Poppler 상태 확인**: ✅ 초록색이면 OK
+2. **API 키 입력**: [Google AI Studio](https://aistudio.google.com/app/apikey)에서 무료 발급 → 입력 → **[💾 저장]**
+
+---
+
+## 💻 수동 설치 (고급 사용자용)
+
+터미널/CMD에서:
 
 ```bash
-# 1. 깃허브에서 프로젝트 복사
 git clone https://github.com/reallygood83/lm-to-pptx.git
-
-# 2. 폴더로 이동
 cd lm-to-pptx
-
-# 3. 필요한 부품(패키지) 한 번에 설치
 pip install -e .
-```
-
-### 3단계: 앱 실행 및 초기 설정 🖱️
-이제 마우스로 편하게 작업하세요!
-
-```bash
 nb2pptx --ui
 ```
-
-그러면 브라우저가 열리며 앱이 뜹니다. 앱 왼쪽 **[사이드바]**에서 다음을 설정하세요:
-1.  **Poppler 설치**: PDF 처리를 위해 필수입니다. (맥은 버튼 클릭, 윈도우는 안내에 따라 설치)
-2.  **API 키 입력**: Google Gemini (무료) 키를 입력하고 **[소중한 API 키 저장]** 버튼을 누르세요.
 
 ---
 
