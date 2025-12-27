@@ -1,5 +1,5 @@
 @echo off
-chcp 65001 >nul
+chcp 65001 >nul 2>&1
 setlocal EnableDelayedExpansion
 
 :: ============================================================
@@ -22,19 +22,18 @@ echo [1/5] Python 설치 확인 중...
 python --version >nul 2>&1
 if %errorlevel% neq 0 (
     echo.
-    echo ❌ Python이 설치되어 있지 않습니다!
+    echo [오류] Python이 설치되어 있지 않습니다!
     echo.
-    echo 📥 Python 다운로드 페이지를 열겠습니다.
-    echo    설치 시 반드시 "Add Python to PATH" 체크박스를 선택하세요!
+    echo [안내] Python 다운로드 페이지를 열겠습니다.
+    echo        설치 시 반드시 "Add Python to PATH" 체크박스를 선택하세요!
     echo.
     start https://www.python.org/downloads/
     echo Python 설치 후 이 파일을 다시 실행해주세요.
-    pause
-    exit /b 1
+    goto :end
 )
 
 for /f "tokens=2" %%i in ('python --version 2^>^&1') do set PYTHON_VERSION=%%i
-echo ✅ Python %PYTHON_VERSION% 발견
+echo [완료] Python %PYTHON_VERSION% 발견
 
 :: ------------------------------------------------------------
 :: 2단계: pip 업그레이드
@@ -42,7 +41,11 @@ echo ✅ Python %PYTHON_VERSION% 발견
 echo.
 echo [2/5] pip 업그레이드 중...
 python -m pip install --upgrade pip --quiet
-echo ✅ pip 업그레이드 완료
+if %errorlevel% neq 0 (
+    echo [경고] pip 업그레이드 실패. 계속 진행합니다...
+) else (
+    echo [완료] pip 업그레이드 완료
+)
 
 :: ------------------------------------------------------------
 :: 3단계: 필수 패키지 설치
@@ -59,12 +62,11 @@ python -m pip install python-pptx pdf2image Pillow google-generativeai openai an
 
 if %errorlevel% neq 0 (
     echo.
-    echo ❌ 패키지 설치 중 오류가 발생했습니다.
-    echo    다시 시도해주세요.
-    pause
-    exit /b 1
+    echo [오류] 패키지 설치 중 오류가 발생했습니다.
+    echo       다시 시도해주세요.
+    goto :end
 )
-echo ✅ 필수 패키지 설치 완료
+echo [완료] 필수 패키지 설치 완료
 
 :: ------------------------------------------------------------
 :: 4단계: 현재 폴더에 설치
@@ -72,7 +74,11 @@ echo ✅ 필수 패키지 설치 완료
 echo.
 echo [4/5] 프로그램 설치 중...
 python -m pip install -e . --quiet
-echo ✅ 프로그램 설치 완료
+if %errorlevel% neq 0 (
+    echo [경고] 프로그램 설치 실패. 직접 실행은 가능합니다.
+) else (
+    echo [완료] 프로그램 설치 완료
+)
 
 :: ------------------------------------------------------------
 :: 5단계: 바탕화면 바로가기 생성
@@ -88,7 +94,7 @@ set "DESKTOP=%USERPROFILE%\Desktop"
 
 :: 실행 스크립트 생성
 echo @echo off > "%INSTALL_DIR%\NotebookLM변환기.bat"
-echo chcp 65001 ^>nul >> "%INSTALL_DIR%\NotebookLM변환기.bat"
+echo chcp 65001 ^>nul 2^>^&1 >> "%INSTALL_DIR%\NotebookLM변환기.bat"
 echo cd /d "%INSTALL_DIR%" >> "%INSTALL_DIR%\NotebookLM변환기.bat"
 echo echo. >> "%INSTALL_DIR%\NotebookLM변환기.bat"
 echo echo ============================================================ >> "%INSTALL_DIR%\NotebookLM변환기.bat"
@@ -102,10 +108,10 @@ echo pause >> "%INSTALL_DIR%\NotebookLM변환기.bat"
 copy "%INSTALL_DIR%\NotebookLM변환기.bat" "%DESKTOP%\NotebookLM변환기.bat" >nul 2>&1
 
 if exist "%DESKTOP%\NotebookLM변환기.bat" (
-    echo ✅ 바탕화면에 'NotebookLM변환기.bat' 바로가기가 생성되었습니다!
+    echo [완료] 바탕화면에 'NotebookLM변환기.bat' 바로가기가 생성되었습니다!
 ) else (
-    echo ⚠️  바탕화면 바로가기 생성 실패. 수동으로 복사해주세요.
-    echo    위치: %INSTALL_DIR%\NotebookLM변환기.bat
+    echo [경고] 바탕화면 바로가기 생성 실패. 수동으로 복사해주세요.
+    echo       위치: %INSTALL_DIR%\NotebookLM변환기.bat
 )
 
 :: ------------------------------------------------------------
@@ -113,10 +119,10 @@ if exist "%DESKTOP%\NotebookLM변환기.bat" (
 :: ------------------------------------------------------------
 echo.
 echo ============================================================
-echo   🎉 설치 완료!
+echo   [설치 완료!]
 echo ============================================================
 echo.
-echo   📌 중요: Poppler 설치가 필요합니다!
+echo   [중요] Poppler 설치가 필요합니다!
 echo   ---------------------------------------------------------
 echo   PDF를 이미지로 변환하려면 Poppler가 필요합니다.
 echo.
@@ -126,7 +132,7 @@ echo.
 echo   2. 압축 해제 후 bin 폴더를 환경변수 PATH에 추가
 echo      (예: C:\poppler\bin)
 echo.
-echo   🎮 실행 방법:
+echo   [실행 방법]
 echo   ---------------------------------------------------------
 echo   바탕화면의 'NotebookLM변환기.bat' 더블클릭!
 echo.
@@ -150,4 +156,7 @@ if /i "%RUN_NOW%"=="Y" (
     python -m streamlit run src/ui/app.py
 )
 
-pause
+:end
+echo.
+echo 아무 키나 누르면 종료합니다...
+pause >nul
